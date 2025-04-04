@@ -1,8 +1,8 @@
 using RestWithASPNETUdemy.model;
 
-namespace RestWithASPNETUdemy.Service;
+namespace RestWithASPNETUdemy.Repository;
 
-public interface IPersonService
+public interface IPersonRepository
 {
     Person Create(Person person);
     Person FindById(long id);

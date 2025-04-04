@@ -1,5 +1,41 @@
+# Build files
 bin/
 obj/
+
+# User-specific files
 *.user
 *.suo
-*.vscode/
+*.userosscache
+*.sln.docstates
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Secrets & configs
+appsettings.Development.json
+appsettings.Production.json
+secrets.json
+
+# Database & data
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# Docker
+docker-compose.override.yml
+
+# OS files
+.DS_Store
+Thumbs.db
