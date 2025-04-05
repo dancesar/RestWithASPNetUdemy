@@ -51,6 +51,10 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Evolve": {
+              "target": "Package",
+              "version": "[3.3.0-alpha1, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.14, )"
@@ -58,6 +62,18 @@
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[9.0.0-preview.3.efcore.9.0.0, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[4.2.1-dev-02352, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[6.0.1-dev-00953, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

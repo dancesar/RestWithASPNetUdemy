@@ -26,7 +26,6 @@ namespace RestWithASPNETUdemy.Controllers
         }
 
         [HttpGet("{id}")]
-
         public IActionResult Get(long id)
         {
             var person = _personBusiness.FindById(id);
