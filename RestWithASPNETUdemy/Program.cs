@@ -5,8 +5,7 @@ using MySqlConnector;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Business.Implementations;
 using RestWithASPNETUdemy.model.Context;
-using RestWithASPNETUdemy.Repository;
-using RestWithASPNETUdemy.Repository.Implementations;
+using RestWithASPNETUdemy.Repository.Generic;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,15 +27,13 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddApiVersioning();
 
-builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
-
-builder.Services.AddScoped<IBooksBusiness, BookBusinessImplementation>();
-builder.Services.AddScoped<IBooksRepository, BooksRepositoryImplementation>();
+builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
+builder.Services.AddScoped<IBooksService, BookServiceImplementation>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 
 var app = builder.Build();
 

@@ -2,7 +2,7 @@ using RestWithASPNETUdemy.model;
 
 namespace RestWithASPNETUdemy.Business;
 
-public interface IBooksBusiness
+public interface IBooksService
 {
     Books Create(Books books);
     Books FindById(long id);

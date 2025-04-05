@@ -1,13 +1,13 @@
 using RestWithASPNETUdemy.model;
-using RestWithASPNETUdemy.Repository;
+using RestWithASPNETUdemy.Repository.Generic;
 
 namespace RestWithASPNETUdemy.Business.Implementations;
 
-public class BookBusinessImplementation : IBooksBusiness
+public class BookServiceImplementation : IBooksService
 {
-    private readonly IBooksRepository _repository;
+    private readonly IRepository<Books> _repository;
 
-    public BookBusinessImplementation(IBooksRepository repository)
+    public BookServiceImplementation(IRepository<Books> repository)
     {
         _repository = repository;
     }
