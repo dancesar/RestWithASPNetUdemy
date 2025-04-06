@@ -71,3 +71,4 @@
 /home/dancesar/Documents/git/net/RestWithASPNetUdemy/RestWithASPNETUdemy/bin/Debug/net8.0/System.Text.Json.dll
 /home/dancesar/Documents/git/net/RestWithASPNetUdemy/RestWithASPNETUdemy/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
 /home/dancesar/Documents/git/net/RestWithASPNetUdemy/RestWithASPNETUdemy/obj/Debug/net8.0/RestWithASPNETUdemy.sourcelink.json
+/home/dancesar/Documents/git/net/RestWithASPNetUdemy/RestWithASPNETUdemy/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
