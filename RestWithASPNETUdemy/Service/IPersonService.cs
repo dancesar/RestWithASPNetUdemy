@@ -1,12 +1,12 @@
-using RestWithASPNETUdemy.model;
+using RestWithASPNETUdemy.Data.DTO;
 
 namespace RestWithASPNETUdemy.Business;
 
 public interface IPersonService
 {
-    Person Create(Person person);
-    Person FindById(long id);
-    Person Update(Person person);
+    PersonDTO Create(PersonDTO personDto);
+    PersonDTO FindById(long id);
+    PersonDTO Update(PersonDTO personDto);
     void Delete(long id);
-    List<Person> FindAll();
+    List<PersonDTO> FindAll();
 }

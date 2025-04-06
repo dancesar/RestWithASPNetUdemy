@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Business;
+using RestWithASPNETUdemy.Data.DTO;
 using RestWithASPNETUdemy.model;
 
 namespace RestWithASPNETUdemy.Controllers
@@ -34,17 +35,17 @@ namespace RestWithASPNETUdemy.Controllers
         }
         
         [HttpPost]
-        public IActionResult Post([FromBody] Person person)
+        public IActionResult Post([FromBody] PersonDTO personDto)
         {
-            if (person == null) return BadRequest();
-            return Ok(_personService.Create(person));
+            if (personDto == null) return BadRequest();
+            return Ok(_personService.Create(personDto));
         }
         
         [HttpPut]
-        public IActionResult Put([FromBody] Person person)
+        public IActionResult Put([FromBody] PersonDTO personDto)
         {
-            if (person == null) return BadRequest();
-            return Ok(_personService.Update(person));
+            if (personDto == null) return BadRequest();
+            return Ok(_personService.Update(personDto));
         }
         
         [HttpDelete("{id}")]

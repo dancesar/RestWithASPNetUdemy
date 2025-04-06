@@ -1,12 +1,13 @@
+using RestWithASPNETUdemy.Data.DTO;
 using RestWithASPNETUdemy.model;
 
 namespace RestWithASPNETUdemy.Business;
 
 public interface IBooksService
 {
-    Books Create(Books books);
-    Books FindById(long id);
-    Books Update(Books books);
+    BooksDTO Create(BooksDTO booksDto);
+    BooksDTO FindById(long id);
+    BooksDTO Update(BooksDTO books);
     void Delete(long id);
-    List<Books> FindAll();
+    List<BooksDTO> FindAll();
 }

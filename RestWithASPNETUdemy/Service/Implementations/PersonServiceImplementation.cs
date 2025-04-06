@@ -1,5 +1,6 @@
+using RestWithASPNETUdemy.Data.Converter.Implementations;
+using RestWithASPNETUdemy.Data.DTO;
 using RestWithASPNETUdemy.model;
-using RestWithASPNETUdemy.Repository;
 using RestWithASPNETUdemy.Repository.Generic;
 
 namespace RestWithASPNETUdemy.Business.Implementations;
@@ -7,30 +8,37 @@ namespace RestWithASPNETUdemy.Business.Implementations;
 public class PersonServiceImplementation : IPersonService
 {
     private readonly IRepository<Person> _repository;
+    
+    private readonly PersonConverter _converter;
 
     public PersonServiceImplementation(IRepository<Person> repository)
     {
         _repository = repository;
+        _converter = new PersonConverter();
     }
 
-    public Person FindById(long id)
+    public PersonDTO FindById(long id)
     {
-        return _repository.FindById(id);
+        return _converter.Parse(_repository.FindById(id));
     }
 
-    public List<Person> FindAll()
+    public List<PersonDTO> FindAll()
     {
-        return _repository.FindAll();
+        return _converter.Parse(_repository.FindAll());
     }
 
-    public Person Create(Person person)
+    public PersonDTO Create(PersonDTO personDto)
     {
-        return _repository.Create(person);
+        var personEntity = _converter.Parse(personDto);
+        personEntity = _repository.Create(personEntity);
+        return _converter.Parse(personEntity);
     }
 
-    public Person Update(Person person)
+    public PersonDTO Update(PersonDTO personDto)
     {
-        return _repository.Update(person);
+        var personEntity = _converter.Parse(personDto);
+        personEntity = _repository.Update(personEntity);
+        return _converter.Parse(personEntity);
     }
 
     public void Delete(long id)

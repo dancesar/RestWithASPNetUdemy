@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Business;
+using RestWithASPNETUdemy.Data.DTO;
 using RestWithASPNETUdemy.model;
 
 namespace RestWithASPNETUdemy.Controllers;
@@ -34,17 +35,17 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Books books)
+    public IActionResult Post([FromBody] BooksDTO booksDto)
     {
-        if (books == null) return BadRequest();
-        return Ok(_booksService.Create(books));
+        if (booksDto == null) return BadRequest();
+        return Ok(_booksService.Create(booksDto));
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(long id, [FromBody] Books books)
+    public IActionResult Put(long id, [FromBody] BooksDTO booksDto)
     {
-        if (books == null) return BadRequest();
-        return Ok(_booksService.Update(books));
+        if (booksDto == null) return BadRequest();
+        return Ok(_booksService.Update(booksDto));
     }
 
     [HttpDelete("{id}")]
