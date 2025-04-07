@@ -1,8 +1,10 @@
 using System.Text.Json.Serialization;
+using RestWithASPNETUdemy.Hypermedia;
+using RestWithASPNETUdemy.Hypermedia.Abstract;
 
 namespace RestWithASPNETUdemy.Data.DTO;
 
-public class BooksDTO
+public class BooksDTO : ISupportsHyperMedia
 {
     [JsonPropertyName("id")]
     public long Id { get; set; }
@@ -18,4 +20,6 @@ public class BooksDTO
 
     [JsonPropertyName("launch_date")]
     public DateTime LaunchDate { get; set; }
+
+    public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }

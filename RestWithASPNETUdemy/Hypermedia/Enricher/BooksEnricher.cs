@@ -5,18 +5,19 @@ using RestWithASPNETUdemy.Hypermedia.Constats;
 
 namespace RestWithASPNETUdemy.Hypermedia.Enricher;
 
-public class PersonEnricher : ContentResponseEnricher<PersonDTO>
+public class BooksEnricher : ContentResponseEnricher<BooksDTO>
 {
     private readonly object _lock = new object();
     
-    protected override Task EnrichModel(PersonDTO content, IUrlHelper urlHelper)
+    protected override Task EnrichModel(BooksDTO content, IUrlHelper urlHelper)
     {
-        var path = "api/person";
+        var path = "api/books";
         string link = GetLink(content.Id, urlHelper, path);
         
         content.Links.Add(new HyperMediaLink()
         {
-            Action = HttpActionVerb.GET,
+            Action = HttpActionVerb
+                .GET,
             Href = link,
             Rel = RelationType.self,
             Type = ResponseTypeFormat.DefaultGet
@@ -47,6 +48,7 @@ public class PersonEnricher : ContentResponseEnricher<PersonDTO>
         });
         
         return null;
+        
     }
 
     private string GetLink(long id, IUrlHelper urlHelper, string path)

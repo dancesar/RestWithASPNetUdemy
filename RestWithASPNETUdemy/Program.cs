@@ -39,7 +39,7 @@ builder.Services.AddMvc(options =>
 
 var filterOptions = new HyperMediaFilterOptions();
 filterOptions.ContentResponseEnrichersList.Add(new PersonEnricher());
-/*filterOptions.ContentResponseEnrichersList.Add(new BookdsEnricher());*/
+filterOptions.ContentResponseEnrichersList.Add(new BooksEnricher());
 
 builder.Services.AddSingleton(filterOptions);
 builder.Services.AddApiVersioning();
@@ -49,8 +49,6 @@ builder.Services.AddScoped<IBooksService, BookServiceImplementation>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
-
-//builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 
 app.UseHttpsRedirection();
 

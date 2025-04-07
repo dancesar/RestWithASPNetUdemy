@@ -2,7 +2,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Data.DTO;
-using RestWithASPNETUdemy.model;
+using RestWithASPNETUdemy.Hypermedia.Filters;
 
 namespace RestWithASPNETUdemy.Controllers;
 
@@ -21,12 +21,14 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         return Ok(_booksService.FindAll());
     }
 
     [HttpGet("{id}")]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get(long id)
     {
         var books = _booksService.FindById(id);
@@ -35,6 +37,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] BooksDTO booksDto)
     {
         if (booksDto == null) return BadRequest();
@@ -42,6 +45,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put(long id, [FromBody] BooksDTO booksDto)
     {
         if (booksDto == null) return BadRequest();
@@ -49,6 +53,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(long id)
     {
         _booksService.Delete(id);
