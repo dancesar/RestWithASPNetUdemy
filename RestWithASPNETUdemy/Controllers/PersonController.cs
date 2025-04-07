@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Data.DTO;
 using RestWithASPNETUdemy.Hypermedia.Filters;
-using RestWithASPNETUdemy.model;
 
 namespace RestWithASPNETUdemy.Controllers
 {

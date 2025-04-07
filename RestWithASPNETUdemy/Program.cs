@@ -28,6 +28,7 @@ if (builder.Environment.IsDevelopment())
     MigrateDatabase(connectionString);
 }
 
+builder.Services.AddControllers();
 builder.Services.AddMvc(options =>
 {
     options.RespectBrowserAcceptHeader = true;
@@ -35,11 +36,12 @@ builder.Services.AddMvc(options =>
     options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("text/json"));
 }).AddXmlSerializerFormatters();
 
+
 var filterOptions = new HyperMediaFilterOptions();
 filterOptions.ContentResponseEnrichersList.Add(new PersonEnricher());
+/*filterOptions.ContentResponseEnrichersList.Add(new BookdsEnricher());*/
 
 builder.Services.AddSingleton(filterOptions);
-
 builder.Services.AddApiVersioning();
 
 builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
@@ -48,16 +50,14 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
-builder.Services.AddControllers();
-app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVErsion}/{id?}");
-
-builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
+//builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVErsion}/{id?}");
 
 app.Run();
 
