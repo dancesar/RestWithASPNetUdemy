@@ -7,8 +7,6 @@ namespace RestWithASPNETUdemy.Hypermedia.Enricher;
 
 public class BooksEnricher : ContentResponseEnricher<BooksDTO>
 {
-    private readonly object _lock = new object();
-    
     protected override Task EnrichModel(BooksDTO content, IUrlHelper urlHelper)
     {
         var path = "api/books";
@@ -16,8 +14,7 @@ public class BooksEnricher : ContentResponseEnricher<BooksDTO>
         
         content.Links.Add(new HyperMediaLink()
         {
-            Action = HttpActionVerb
-                .GET,
+            Action = HttpActionVerb.GET,
             Href = link,
             Rel = RelationType.self,
             Type = ResponseTypeFormat.DefaultGet
@@ -47,15 +44,15 @@ public class BooksEnricher : ContentResponseEnricher<BooksDTO>
             Type = "int"
         });
         
-        return null;
+        return Task.CompletedTask;
         
     }
 
     private string GetLink(long id, IUrlHelper urlHelper, string path)
     {
-        lock (_lock)
+        lock (this)
         {
-            var url = new { controller = path, id = id };
+            var url = new { controller = path, id };
             return new StringBuilder(urlHelper.Link("DefaultApi", url)).Replace("%2F", "/").ToString();
         }
     }

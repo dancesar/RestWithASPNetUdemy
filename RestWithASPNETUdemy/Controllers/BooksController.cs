@@ -44,7 +44,7 @@ public class BooksController : ControllerBase
         return Ok(_booksService.Create(booksDto));
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put(long id, [FromBody] BooksDTO booksDto)
     {

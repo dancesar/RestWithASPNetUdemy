@@ -7,8 +7,6 @@ namespace RestWithASPNETUdemy.Hypermedia.Enricher;
 
 public class PersonEnricher : ContentResponseEnricher<PersonDTO>
 {
-    private readonly object _lock = new object();
-    
     protected override Task EnrichModel(PersonDTO content, IUrlHelper urlHelper)
     {
         var path = "api/person";
@@ -46,14 +44,14 @@ public class PersonEnricher : ContentResponseEnricher<PersonDTO>
             Type = "int"
         });
         
-        return null;
+        return Task.CompletedTask;
     }
 
     private string GetLink(long id, IUrlHelper urlHelper, string path)
     {
-        lock (_lock)
+        lock (this)
         {
-            var url = new { controller = path, id = id };
+            var url = new { controller = path, id };
             return new StringBuilder(urlHelper.Link("DefaultApi", url)).Replace("%2F", "/").ToString();
         }
     }
