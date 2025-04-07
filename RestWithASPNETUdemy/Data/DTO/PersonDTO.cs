@@ -1,8 +1,10 @@
 using System.Text.Json.Serialization;
+using RestWithASPNETUdemy.Hypermedia;
+using RestWithASPNETUdemy.Hypermedia.Abstract;
 
 namespace RestWithASPNETUdemy.Data.DTO;
 
-public class PersonDTO
+public class PersonDTO : ISupportsHyperMedia
 {
     [JsonPropertyName("id")]
     public long Id { get; set; }
@@ -18,4 +20,6 @@ public class PersonDTO
     
     [JsonPropertyName("gender")]
     public string Gender { get; set; }
+
+    public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }

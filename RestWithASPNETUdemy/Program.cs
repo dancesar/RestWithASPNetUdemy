@@ -5,6 +5,8 @@ using Microsoft.Net.Http.Headers;
 using MySqlConnector;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Business.Implementations;
+using RestWithASPNETUdemy.Hypermedia.Enricher;
+using RestWithASPNETUdemy.Hypermedia.Filters;
 using RestWithASPNETUdemy.model.Context;
 using RestWithASPNETUdemy.Repository.Generic;
 using Serilog;
@@ -33,17 +35,23 @@ builder.Services.AddMvc(options =>
     options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("text/json"));
 }).AddXmlSerializerFormatters();
 
+var filterOptions = new HyperMediaFilterOptions();
+filterOptions.ContentResponseEnrichersList.Add(new PersonEnricher());
+
+builder.Services.AddSingleton(filterOptions);
+
 builder.Services.AddApiVersioning();
 
 builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 builder.Services.AddScoped<IBooksService, BookServiceImplementation>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
+var app = builder.Build();
+
 builder.Services.AddControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVErsion}/{id?}");
 
 builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
-
-var app = builder.Build();
 
 app.UseHttpsRedirection();
 

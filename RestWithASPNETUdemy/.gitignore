@@ -21,6 +21,7 @@ obj/
 # Environment files
 .env
 .env.*
+**/.env
 
 # Secrets & configs
 appsettings.Development.json
