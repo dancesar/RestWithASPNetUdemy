@@ -19,6 +19,14 @@ var appVersion = "v1";
 var appDescription = $"REST API RESTful developed in course '{appName}'";
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+{
+    builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
+
 builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen(c => {
@@ -75,6 +83,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
