@@ -68,6 +68,18 @@ namespace RestWithASPNETUdemy.Controllers
             return Ok(_personService.Update(personDto));
         }
         
+        [HttpPatch("{id}")]
+        [ProducesResponseType(200, Type = typeof(PersonDTO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Patch(long id)
+        {
+            var person = _personService.Diasable(id);
+            return Ok(person);
+        }
+        
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
