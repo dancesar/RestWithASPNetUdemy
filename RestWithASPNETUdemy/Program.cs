@@ -1,16 +1,24 @@
+using System.Text;
 using DotNetEnv;
 using EvolveDb;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Business.Implementations;
+using RestWithASPNETUdemy.Configurations;
 using RestWithASPNETUdemy.Hypermedia.Enricher;
 using RestWithASPNETUdemy.Hypermedia.Filters;
 using RestWithASPNETUdemy.model.Context;
+using RestWithASPNETUdemy.Repository;
 using RestWithASPNETUdemy.Repository.Generic;
+using RestWithASPNETUdemy.ServicesToken;
+using RestWithASPNETUdemy.ServicesToken.Implementations;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +27,13 @@ var appVersion = "v1";
 var appDescription = $"REST API RESTful developed in course '{appName}'";
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+builder.Services.AddAuthorization(auth =>
+{
+    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser().Build());
+});
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
 {
@@ -46,6 +61,15 @@ builder.Services.AddSwaggerGen(c => {
 
 Env.Load();
 
+var tokenConfig = new TokenConfiguration {
+    Audience = Environment.GetEnvironmentVariable("TOKEN_AUDIENCE"),
+    Issuer = Environment.GetEnvironmentVariable("TOKEN_ISSUER"),
+    Secret = Environment.GetEnvironmentVariable("TOKEN_SECRET"),
+    Minutes = int.Parse(Environment.GetEnvironmentVariable("TOKEN_MINUTES") ?? "60"),
+    DaysToExpiry = int.Parse(Environment.GetEnvironmentVariable("TOKEN_DAYS_TO_EXPIRY") ?? "7")
+};
+builder.Services.AddSingleton(tokenConfig);
+
 var connectionString = $"Server={Environment.GetEnvironmentVariable("DB_HOST")};" +
                        $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
                        $"Uid={Environment.GetEnvironmentVariable("DB_USER")};" +
@@ -58,6 +82,25 @@ if (builder.Environment.IsDevelopment())
 {
     MigrateDatabase(connectionString);
 }
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = tokenConfig.Issuer,
+            ValidAudience = tokenConfig.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfig.Secret))
+        };
+    });
 
 builder.Services.AddMvc(options =>
 {
@@ -78,6 +121,12 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 builder.Services.AddScoped<IBooksService, BookServiceImplementation>();
+builder.Services.AddScoped<ILoginService, LoginServiceImplementation>();
+
+builder.Services.AddTransient<ITokenService, TokenService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
@@ -96,10 +145,11 @@ var option = new RewriteOptions();
 option.AddRedirect("^$", "swagger");
 app.UseRewriter(option);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVersion}/{id?}");
+/*app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVersion}/{id?}");*/
 
 app.Run();
 
