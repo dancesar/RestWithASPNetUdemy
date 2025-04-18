@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
@@ -119,9 +120,12 @@ builder.Services.AddApiVersioning();
 
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 builder.Services.AddScoped<IBooksService, BookServiceImplementation>();
 builder.Services.AddScoped<ILoginService, LoginServiceImplementation>();
+builder.Services.AddScoped<IFileService, FilesServiceImplementation>();
 
 builder.Services.AddTransient<ITokenService, TokenService>();
 
